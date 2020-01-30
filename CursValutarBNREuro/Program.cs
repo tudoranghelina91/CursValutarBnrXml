@@ -15,9 +15,6 @@ namespace CursValutarBNREuro
 
             reader.ReadToDescendant("Cube");
 
-            decimal value;
-            string key = null;
-
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
