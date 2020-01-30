@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 
 namespace CursValutarBnrXmlTest1
 {
@@ -13,34 +14,60 @@ namespace CursValutarBnrXmlTest1
     {
         static void Main(string[] args)
         {
-            XmlReader reader = XmlReader.Create("https://www.bnr.ro/nbrfxrates.xml");
+            XmlReaderSettings settings = new XmlReaderSettings();
+
+            // Xsd pentru validare
+            settings.Schemas.Add("http://www.bnr.ro/xsd", "https://www.bnr.ro/xsd/nbrfxrates.xsd");
+            settings.ValidationType = ValidationType.Schema;
+            settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
+
+            // handler ce se ocupa de erori de validare
+            settings.ValidationEventHandler += ValidationEventHandler;
+
+            // Citeste un Xml Valid
+            XmlReader reader = XmlReader.Create("https://www.bnr.ro/nbrfxrates.xml", settings);
+
+            //// Xml Invalid
+            //XmlReader reader = XmlReader.Create("invalidTest.xml", settings);
 
             Dictionary<string, decimal> currencyTable = new Dictionary<string, decimal>();
 
-            reader.ReadToDescendant("Cube");
-
-            decimal value = 0;
-            string key = null;
-
-            while(reader.Read())
+            try
             {
-                if (reader.NodeType == XmlNodeType.Text)
+                reader.ReadToDescendant("Cube");
+
+                decimal value = 0;
+                string key = null;
+
+                while(reader.Read())
                 {
-                    value = XmlConvert.ToDecimal(reader.Value);
-                    currencyTable.Add(key, value);
+                    if (reader.NodeType == XmlNodeType.Text)
+                    {
+                        value = XmlConvert.ToDecimal(reader.Value);
+                        currencyTable.Add(key, value);
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        key = reader.GetAttribute("currency");
+                    }
                 }
 
-                if (reader.NodeType == XmlNodeType.Element)
+                foreach (var element in currencyTable)
                 {
-                    key = reader.GetAttribute("currency");
+                    Console.WriteLine($"{element.Key} {element.Value}");
                 }
             }
 
-            foreach (var element in currencyTable)
+            catch
             {
-                Console.WriteLine($"{element.Key} {element.Value}");
+                Console.WriteLine("Invalid XML file!");
             }
+        }
 
+        static void ValidationEventHandler(object sender, ValidationEventArgs args)
+        {
+            throw args.Exception;
         }
     }
 }
