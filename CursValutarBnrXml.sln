@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursValutarBnrXmlTest1", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursValutarBNRXmlEuroTest", "CursValutarBNREuro\CursValutarBNRXmlEuroTest.csproj", "{BB850966-1B44-4700-9D97-468175C242F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursValutarBnrWinForms", "CursValutarBnrWinForms\CursValutarBnrWinForms.csproj", "{AF899E61-8F71-44EE-97B6-FAEF159E437F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BB850966-1B44-4700-9D97-468175C242F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB850966-1B44-4700-9D97-468175C242F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB850966-1B44-4700-9D97-468175C242F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF899E61-8F71-44EE-97B6-FAEF159E437F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF899E61-8F71-44EE-97B6-FAEF159E437F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF899E61-8F71-44EE-97B6-FAEF159E437F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF899E61-8F71-44EE-97B6-FAEF159E437F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
