@@ -20,6 +20,7 @@ namespace CursValutarBnrXmlTest1
             settings.Schemas.Add("http://www.bnr.ro/xsd", "https://www.bnr.ro/xsd/nbrfxrates.xsd");
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
+            settings.MaxCharactersInDocument = 2000;
 
             // handler ce se ocupa de erori de validare
             settings.ValidationEventHandler += ValidationEventHandler;

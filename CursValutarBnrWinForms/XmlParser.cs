@@ -20,6 +20,7 @@ namespace CursValutarBnrWinForms
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
             settings.DtdProcessing = DtdProcessing.Parse;
+            settings.MaxCharactersInDocument = 2000;
 
             settings.ValidationEventHandler += ValidationEventHandler;
 
