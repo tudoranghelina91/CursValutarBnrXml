@@ -36,7 +36,6 @@ namespace CursValutarBnrWinForms
             Value = value;
             Multiplier = multiplier;
         }
-
         public Currency() { }
     }
 }

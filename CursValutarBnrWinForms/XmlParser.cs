@@ -11,7 +11,7 @@ namespace CursValutarBnrWinForms
 {
     class XmlParser
     {
-        public async Task<BindingList<Currency>> GetCurrencyTable()
+        public BindingList<Currency> GetCurrencyTable()
         {
             XmlReaderSettings settings = new XmlReaderSettings();
 
@@ -19,7 +19,6 @@ namespace CursValutarBnrWinForms
             settings.Schemas.Add("http://www.bnr.ro/xsd", "https://www.bnr.ro/xsd/nbrfxrates.xsd");
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
-            settings.Async = true;
 
             settings.ValidationEventHandler += ValidationEventHandler;
 
@@ -29,11 +28,17 @@ namespace CursValutarBnrWinForms
 
             try
             {
+                //// Used for testing async functionality and prevent UI locking
+                //for (int i = 0; i < 1000000000; i++) ;
+                //for (int i = 0; i < 1000000000; i++) ;
+                //for (int i = 0; i < 1000000000; i++) ;
+                //for (int i = 0; i < 1000000000; i++) ;
+                //for (int i = 0; i < 1000000000; i++) ;
                 reader.ReadToDescendant("Cube");
 
                 Currency currency = new Currency();
 
-                while (await reader.ReadAsync())
+                while (reader.Read())
                 {
                     if (reader.NodeType == XmlNodeType.Text)
                     {
