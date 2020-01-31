@@ -49,7 +49,15 @@ namespace CursValutarBnrXmlTest1
 
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        key = reader.GetAttribute("currency");
+                        if (reader.AttributeCount == 2)
+                        {
+                            key = reader.GetAttribute("multiplier") + " " + reader.GetAttribute("currency");
+                        }
+
+                        else
+                        {
+                            key = reader.GetAttribute("currency");
+                        }
                     }
                 }
 
