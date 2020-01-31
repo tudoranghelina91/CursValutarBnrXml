@@ -23,13 +23,22 @@ namespace CursValutarBnrWinForms
 
         private void Bind()
         {
-            currencyBindingSource.DataSource = currencyTable;
-            dataGridView1.DataSource = currencyBindingSource;
-            dataGridView1.Columns["Multiplier"].Visible = false;
-            dataGridView1.Columns["Name"].HeaderText = "Currency";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
+            if (currencyTable != null)
+            {
+                currencyBindingSource.DataSource = currencyTable;
+                dataGridView1.DataSource = currencyBindingSource;
+                dataGridView1.Columns["Multiplier"].Visible = false;
+                dataGridView1.Columns["Name"].HeaderText = "Currency";
+                dataGridView1.ReadOnly = true;
+                dataGridView1.AllowUserToAddRows = false;
+                dataGridView1.AllowUserToDeleteRows = false;
+            }
+
+            else
+            {
+                MessageBox.Show("Could not retrieve XML file");
+                Application.Exit();
+            }
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -41,6 +50,7 @@ namespace CursValutarBnrWinForms
             xmlParser = new XmlParser();
             currencyBindingSource = new BindingSource();
             refreshBtn.Enabled = false;
+
             currencyTable = await Task.Run(() => xmlParser.GetCurrencyTable());
             refreshBtn.Enabled = true;
             timer.Start();
@@ -51,30 +61,41 @@ namespace CursValutarBnrWinForms
         {
             refreshBtn.Enabled = false;
             timer.Stop();
-            Currency[] currencyTableAux = new Currency[currencyTable.Count];
-            currencyTable.CopyTo(currencyTableAux, 0);
-            currencyTable = await Task.Run(() => xmlParser.GetCurrencyTable());
-
-            for (int i = 0; i < currencyTable.Count; i++)
+            if (currencyTable != null)
             {
-                if (currencyTable[i].Value > currencyTableAux[i].Value)
-                {
-                    dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Green;
-                }
+                Currency[] currencyTableAux = new Currency[currencyTable.Count];
+                currencyTable.CopyTo(currencyTableAux, 0);
+                currencyTable = await Task.Run(() => xmlParser.GetCurrencyTable());
 
-                else if (currencyTable[i].Value < currencyTableAux[i].Value)
+                if (currencyTable != null)
                 {
-                    dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Red;
+                    for (int i = 0; i < currencyTable.Count; i++)
+                    {
+                        if (currencyTable[i].Value > currencyTableAux[i].Value)
+                        {
+                            dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Green;
+                        }
+
+                        else if (currencyTable[i].Value < currencyTableAux[i].Value)
+                        {
+                            dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Red;
+                        }
+
+                        else
+                        {
+                            dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Black;
+                        }
+                    }
+                    timer.Start();
+                    Bind();
+                    refreshBtn.Enabled = true;
                 }
 
                 else
                 {
-                    dataGridView1.Rows[i].Cells["Value"].Style.ForeColor = Color.Black;
+                    MessageBox.Show("Something went wrong. Could not retrieve XML data");
                 }
             }
-            timer.Start();
-            Bind();
-            refreshBtn.Enabled = true;
         }
 
         private void timer_Tick(object sender, EventArgs e)

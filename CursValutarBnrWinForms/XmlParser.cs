@@ -19,6 +19,7 @@ namespace CursValutarBnrWinForms
             settings.Schemas.Add("http://www.bnr.ro/xsd", "https://www.bnr.ro/xsd/nbrfxrates.xsd");
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
+            settings.DtdProcessing = DtdProcessing.Parse;
 
             settings.ValidationEventHandler += ValidationEventHandler;
 
@@ -71,7 +72,7 @@ namespace CursValutarBnrWinForms
 
             catch
             {
-                throw;
+                return null;
             }
         }
 
